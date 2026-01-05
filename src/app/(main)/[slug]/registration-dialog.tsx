@@ -262,7 +262,7 @@ export function RegistrationDialog({
           <button
             key={ticket.id}
             onClick={() => setSelectedTicket(ticket)}
-            className={`w-full p-4 rounded-lg border text-right transition-colors ${
+            className={`w-full p-4 rounded-lg border text-right transition-colors cursor-pointer ${
               selectedTicket?.id === ticket.id
                 ? "border-primary bg-primary/10"
                 : "border-border hover:border-primary/50"

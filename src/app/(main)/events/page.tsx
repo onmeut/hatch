@@ -91,17 +91,15 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold mb-2">کشف رویدادها</h1>
           <p className="text-muted-foreground text-base">
             رویدادهای محبوب نزدیک خودت رو ببین، بر اساس دسته‌بندی جستجو کن یا
             تقویم‌های عالی جامعه رو بررسی کن
           </p>
         </div>
       </div>
-
       {/* Browse by Category Section */}
       <div className="mb-12">
-        <h2 className="text-2xl font-bold mb-6">جستجو بر اساس دسته‌بندی</h2>
+        <h2 className="text-2xl font-bold mb-6">موضوعات</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {Object.entries(CATEGORIES).map(([key, label]) => {
             const category = key as CategoryType;
@@ -141,7 +139,10 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
           })}
         </div>
       </div>
-
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl font-bold">ایونت‌ها</h1>
+      </div>
       {/* Active Filters Display */}
       {(activeCategory || activeCity) && (
         <div className="flex items-center gap-2 mb-6">
