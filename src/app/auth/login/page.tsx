@@ -95,7 +95,7 @@ function LoginForm() {
     <Card className="w-full max-w-md">
       <CardHeader className="text-center">
         <Icons.Rocket className="mx-auto mb-4 h-10 w-10 text-primary" />
-        <CardTitle className="text-2xl">ورود به هچ</CardTitle>
+        <CardTitle className="text-2xl">ورود به هاچ</CardTitle>
         <CardDescription>
           {showOtpInput
             ? "کدی که بهت ایمیل کردیم رو وارد کن"

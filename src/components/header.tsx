@@ -40,7 +40,7 @@ export function Header({ user }: HeaderProps) {
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <Icons.Rocket className="h-6 w-6" />
-          <span className="text-xl font-bold">هچ</span>
+          <span className="text-xl font-bold">هاچ</span>
         </Link>
 
         <nav className="flex items-center gap-4">
@@ -93,4 +93,3 @@ export function Header({ user }: HeaderProps) {
     </header>
   );
 }
-

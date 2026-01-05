@@ -47,7 +47,7 @@ export default async function HomePage() {
         <div className="container">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 flex items-center justify-center gap-2">
             <Icons.Rocket className="h-8 w-8 text-primary" />
-            رویدادت رو با <span className="text-primary">هچ</span> بساز
+            رویدادت رو با <span className="text-primary">هاچ</span> بساز
           </h1>
           <p className="text-xl text-muted-foreground mb-8">
             یه پلتفرم ساده برای ساختن رویداد و دعوت کردن دوستات. بدون پیچیدگی،
@@ -93,7 +93,7 @@ export default async function HomePage() {
       <section className="py-16 px-4 bg-secondary/30">
         <div className="container">
           <h2 className="text-2xl font-bold text-center mb-12">
-            چرا هچ؟ <Icons.Sparkles className="inline h-5 w-5 text-primary" />
+            چرا هاچ؟ <Icons.Sparkles className="inline h-5 w-5 text-primary" />
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center p-6">

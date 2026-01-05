@@ -66,7 +66,7 @@ export default async function EventPage({ params }: EventPageProps) {
   let isRegistered = false;
   let userTicketId: string | null = null;
   let registrationStatus: RegistrationStatus | null = null;
-  
+
   // Get user profile if logged in
   let userProfile: Tables<"profiles"> | null = null;
   if (user) {
@@ -77,8 +77,10 @@ export default async function EventPage({ params }: EventPageProps) {
       .eq("user_id", user.id)
       .single();
     isRegistered = !!registration;
-    userTicketId = (registration as { ticket_id: string | null } | null)?.ticket_id || null;
-    registrationStatus = (registration as { status: RegistrationStatus } | null)?.status || null;
+    userTicketId =
+      (registration as { ticket_id: string | null } | null)?.ticket_id || null;
+    registrationStatus =
+      (registration as { status: RegistrationStatus } | null)?.status || null;
 
     // Get user profile
     const { data: profileData } = await supabase
@@ -103,8 +105,12 @@ export default async function EventPage({ params }: EventPageProps) {
 
   const formatShortDate = (dateStr: string) => {
     const date = new Date(dateStr);
-    const month = new Intl.DateTimeFormat("fa-IR", { month: "short" }).format(date);
-    const day = new Intl.DateTimeFormat("fa-IR", { day: "numeric" }).format(date);
+    const month = new Intl.DateTimeFormat("fa-IR", { month: "short" }).format(
+      date
+    );
+    const day = new Intl.DateTimeFormat("fa-IR", { day: "numeric" }).format(
+      date
+    );
     return { month, day };
   };
 
@@ -224,7 +230,10 @@ export default async function EventPage({ params }: EventPageProps) {
                         <div className="flex items-center gap-2">
                           <span className="font-medium">{ticket.name}</span>
                           {ticket.requires_approval && (
-                            <Badge variant="outline" className="text-xs text-yellow-500 border-yellow-500/50">
+                            <Badge
+                              variant="outline"
+                              className="text-xs text-yellow-500 border-yellow-500/50"
+                            >
                               نیاز به تأیید
                             </Badge>
                           )}
@@ -242,7 +251,9 @@ export default async function EventPage({ params }: EventPageProps) {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground">بلیطی تعریف نشده</p>
+                <p className="text-sm text-muted-foreground">
+                  بلیطی تعریف نشده
+                </p>
               )}
 
               {!isCreator && (
@@ -298,7 +309,7 @@ export default async function EventPage({ params }: EventPageProps) {
                 </Avatar>
                 <div>
                   <div className="font-medium">
-                    {creator.full_name || "کاربر هچ"}
+                    {creator.full_name || "کاربر هاچ"}
                   </div>
                   <div className="text-sm text-muted-foreground">
                     {creator.email}
@@ -335,7 +346,9 @@ export default async function EventPage({ params }: EventPageProps) {
             {creator && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">برگزارکننده</span>
+                  <span className="text-sm text-muted-foreground">
+                    برگزارکننده
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Avatar className="h-10 w-10">
@@ -450,7 +463,10 @@ export default async function EventPage({ params }: EventPageProps) {
                           <div className="flex items-center gap-2">
                             <span className="font-medium">{ticket.name}</span>
                             {ticket.requires_approval && (
-                              <Badge variant="outline" className="text-xs text-yellow-500 border-yellow-500/50">
+                              <Badge
+                                variant="outline"
+                                className="text-xs text-yellow-500 border-yellow-500/50"
+                              >
                                 نیاز به تأیید
                               </Badge>
                             )}
@@ -504,11 +520,11 @@ export default async function EventPage({ params }: EventPageProps) {
 
             {/* Online Link */}
             {event.location_type === "online" && event.link && isRegistered && (
-            <div className="p-4 bg-secondary/50 rounded-lg">
-              <div className="text-sm text-muted-foreground mb-2 flex items-center gap-1">
-                <Icons.Link2 className="h-4 w-4" />
-                لینک رویداد
-              </div>
+              <div className="p-4 bg-secondary/50 rounded-lg">
+                <div className="text-sm text-muted-foreground mb-2 flex items-center gap-1">
+                  <Icons.Link2 className="h-4 w-4" />
+                  لینک رویداد
+                </div>
                 <a
                   href={event.link}
                   target="_blank"

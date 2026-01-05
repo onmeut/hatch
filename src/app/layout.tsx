@@ -11,7 +11,7 @@ const vazirmatn = Vazirmatn({
 });
 
 export const metadata: Metadata = {
-  title: "هچ | پلتفرم رویدادها",
+  title: "هاچ | پلتفرم رویدادها",
   description: "رویدادت رو بساز و با بقیه به اشتراک بذار",
 };
 

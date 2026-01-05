@@ -124,7 +124,10 @@ export default async function TicketPage({ params }: TicketPageProps) {
         );
       case "pending":
         return (
-          <Badge variant="outline" className="text-yellow-500 border-yellow-500/50">
+          <Badge
+            variant="outline"
+            className="text-yellow-500 border-yellow-500/50"
+          >
             <Icons.Clock4 className="h-3 w-3 ml-1" />
             در انتظار تأیید
           </Badge>
@@ -217,10 +220,7 @@ export default async function TicketPage({ params }: TicketPageProps) {
               <div className="flex items-center gap-3">
                 <Avatar className="h-12 w-12">
                   <AvatarFallback className="bg-primary text-primary-foreground">
-                    {getInitials(
-                      registration.first_name,
-                      user.email || "?"
-                    )}
+                    {getInitials(registration.first_name, user.email || "?")}
                   </AvatarFallback>
                 </Avatar>
                 <div>
@@ -279,7 +279,7 @@ export default async function TicketPage({ params }: TicketPageProps) {
                   </Avatar>
                   <div>
                     <div className="font-medium">
-                      {creator.full_name || "کاربر هچ"}
+                      {creator.full_name || "کاربر هاچ"}
                     </div>
                     <div className="text-sm text-muted-foreground">
                       {creator.email}
@@ -369,4 +369,3 @@ export default async function TicketPage({ params }: TicketPageProps) {
     </div>
   );
 }
-
