@@ -245,7 +245,7 @@ export function RegistrationDialog({
       onSuccess();
       
       // Redirect to ticket page
-      router.push(`/events/${event.id}/ticket`);
+      router.push(`/${event.slug}/ticket`);
     } catch {
       toast.error("یه مشکلی پیش اومد");
     }

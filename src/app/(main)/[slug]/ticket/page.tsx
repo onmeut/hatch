@@ -21,11 +21,11 @@ type Registration = Tables<"registrations">;
 type Profile = Tables<"profiles">;
 
 interface TicketPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 export default async function TicketPage({ params }: TicketPageProps) {
-  const { id } = await params;
+  const { slug } = await params;
   const supabase = await createClient();
 
   // Get current user
@@ -34,14 +34,14 @@ export default async function TicketPage({ params }: TicketPageProps) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/auth/login?redirect=/events/${id}/ticket`);
+    redirect(`/auth/login?redirect=/${slug}/ticket`);
   }
 
   // Get event
   const { data: eventData } = await supabase
     .from("events")
     .select("*")
-    .eq("id", id)
+    .eq("slug", slug)
     .single();
 
   if (!eventData) {
@@ -60,7 +60,7 @@ export default async function TicketPage({ params }: TicketPageProps) {
 
   if (!registrationData) {
     // User is not registered for this event
-    redirect(`/events/${id}`);
+    redirect(`/${slug}`);
   }
 
   const registration = registrationData as Registration;
@@ -150,7 +150,7 @@ export default async function TicketPage({ params }: TicketPageProps) {
       {/* Back Link */}
       <div className="mb-6">
         <Link
-          href={`/events/${id}`}
+          href={`/${slug}`}
           className="text-sm text-muted-foreground hover:text-primary flex items-center gap-1"
         >
           <Icons.ChevronRight className="h-4 w-4" />
@@ -339,7 +339,7 @@ export default async function TicketPage({ params }: TicketPageProps) {
           eventTitle={event.title}
           ticketCode={ticketCode}
         />
-        <Link href={`/events/${id}`} className="flex-1">
+        <Link href={`/${slug}`} className="flex-1">
           <Button variant="outline" className="w-full">
             مشاهده رویداد
           </Button>

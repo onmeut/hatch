@@ -22,12 +22,12 @@ type Event = Tables<"events">;
 type Registration = Tables<"registrations">;
 
 interface AttendeesPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
   searchParams: Promise<{ status?: string }>;
 }
 
 export default async function AttendeesPage({ params, searchParams }: AttendeesPageProps) {
-  const { id } = await params;
+  const { slug } = await params;
   const { status } = await searchParams;
   const supabase = await createClient();
 
@@ -44,7 +44,7 @@ export default async function AttendeesPage({ params, searchParams }: AttendeesP
   const { data: eventData } = await supabase
     .from("events")
     .select("*")
-    .eq("id", id)
+    .eq("slug", slug)
     .single();
 
   if (!eventData) {
@@ -55,14 +55,14 @@ export default async function AttendeesPage({ params, searchParams }: AttendeesP
 
   // Check if user is the creator
   if (event.creator_id !== user.id) {
-    redirect(`/events/${id}`);
+    redirect(`/${slug}`);
   }
 
   // Get registrations
   const { data: registrationsData } = await supabase
     .from("registrations")
     .select("*")
-    .eq("event_id", id)
+    .eq("event_id", event.id)
     .order("created_at", { ascending: false });
 
   const registrations = (registrationsData || []) as Registration[];
@@ -139,7 +139,7 @@ export default async function AttendeesPage({ params, searchParams }: AttendeesP
       <div className="flex items-center justify-between mb-8">
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-muted-foreground text-sm">
-            <Link href={`/events/${id}`} className="hover:text-primary">
+            <Link href={`/${slug}`} className="hover:text-primary">
               {event.title}
             </Link>
             <Icons.ChevronLeft className="h-4 w-4" />
@@ -147,7 +147,7 @@ export default async function AttendeesPage({ params, searchParams }: AttendeesP
           </div>
           <h1 className="text-2xl font-bold">لیست شرکت‌کننده‌ها</h1>
         </div>
-        <Link href={`/events/${id}`}>
+        <Link href={`/${slug}`}>
           <Button variant="outline">
             <Icons.ChevronRight className="h-4 w-4 ml-2" />
             برگشت به رویداد
@@ -215,20 +215,20 @@ export default async function AttendeesPage({ params, searchParams }: AttendeesP
       <Tabs defaultValue={status || "all"} className="space-y-4">
         <TabsList>
           <TabsTrigger value="all" asChild>
-            <Link href={`/events/${id}/attendees`}>همه ({counts.all})</Link>
+            <Link href={`/${slug}/attendees`}>همه ({counts.all})</Link>
           </TabsTrigger>
           <TabsTrigger value="approved" asChild>
-            <Link href={`/events/${id}/attendees?status=approved`}>
+            <Link href={`/${slug}/attendees?status=approved`}>
               تأیید شده ({counts.approved})
             </Link>
           </TabsTrigger>
           <TabsTrigger value="pending" asChild>
-            <Link href={`/events/${id}/attendees?status=pending`}>
+            <Link href={`/${slug}/attendees?status=pending`}>
               در انتظار ({counts.pending})
             </Link>
           </TabsTrigger>
           <TabsTrigger value="rejected" asChild>
-            <Link href={`/events/${id}/attendees?status=rejected`}>
+            <Link href={`/${slug}/attendees?status=rejected`}>
               رد شده ({counts.rejected})
             </Link>
           </TabsTrigger>
@@ -293,7 +293,6 @@ export default async function AttendeesPage({ params, searchParams }: AttendeesP
                           <AttendeeActions
                             registrationId={registration.id}
                             currentStatus={registration.status}
-                            eventId={id}
                           />
                         </TableCell>
                       </TableRow>

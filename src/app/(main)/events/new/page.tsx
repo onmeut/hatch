@@ -43,7 +43,7 @@ export default function NewEventPage() {
       }
 
       toast.success("رویدادت ساخته شد! 🎉");
-      router.push(`/events/${(data as { id: string }).id}`);
+      router.push(`/${(data as { slug: string }).slug}`);
     } catch (error) {
       console.error("Create event error:", error);
       toast.error("یه مشکلی پیش اومد", {

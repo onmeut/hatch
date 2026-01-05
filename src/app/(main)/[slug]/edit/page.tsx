@@ -12,11 +12,11 @@ import { Icons } from "@/components/icons";
 type Event = Tables<"events">;
 
 interface EditEventPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 export default function EditEventPage({ params }: EditEventPageProps) {
-  const { id } = use(params);
+  const { slug } = use(params);
   const router = useRouter();
   const supabase = createClient();
   const [initialValues, setInitialValues] = useState<EventFormValues | null>(null);
@@ -36,7 +36,7 @@ export default function EditEventPage({ params }: EditEventPageProps) {
       const { data: eventData, error } = await supabase
         .from("events")
         .select("*")
-        .eq("id", id)
+        .eq("slug", slug)
         .single();
 
       if (error || !eventData) {
@@ -48,7 +48,7 @@ export default function EditEventPage({ params }: EditEventPageProps) {
       const event = eventData as Event;
       if (event.creator_id !== user.id) {
         toast.error("دسترسی نداری!");
-        router.push(`/events/${id}`);
+        router.push(`/${slug}`);
         return;
       }
 
@@ -69,7 +69,7 @@ export default function EditEventPage({ params }: EditEventPageProps) {
     };
 
     fetchEvent();
-  }, [id, router, supabase]);
+  }, [slug, router, supabase]);
 
   const handleUpdate = async (values: EventFormValues) => {
     try {
@@ -91,17 +91,19 @@ export default function EditEventPage({ params }: EditEventPageProps) {
         location: values.location || null,
       };
 
-      const { error } = await supabase
+      const { data: updatedEvent, error } = await supabase
         .from("events")
         .update(updateData as never)
-        .eq("id", id);
+        .eq("slug", slug)
+        .select("slug")
+        .single();
 
       if (error) {
         throw error;
       }
 
       toast.success("رویداد بروز شد! ✨");
-      router.push(`/events/${id}`);
+      router.push(`/${updatedEvent.slug}`);
     } catch (error) {
       console.error("Update error:", error);
       toast.error("یه مشکلی پیش اومد", {

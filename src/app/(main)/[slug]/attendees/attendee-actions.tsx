@@ -28,13 +28,11 @@ import { Icons } from "@/components/icons";
 interface AttendeeActionsProps {
   registrationId: string;
   currentStatus: RegistrationStatus;
-  eventId: string;
 }
 
 export function AttendeeActions({
   registrationId,
   currentStatus,
-  eventId,
 }: AttendeeActionsProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);

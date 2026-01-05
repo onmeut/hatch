@@ -152,7 +152,7 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
       {events.length > 0 ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {events.map((event) => (
-            <Link href={`/events/${event.id}`} key={event.id}>
+            <Link href={`/${event.slug}`} key={event.id}>
               <Card className="h-full hover:shadow-lg transition-all hover:border-primary/50 cursor-pointer overflow-hidden">
                 {event.cover_image && (
                   <div className="aspect-video bg-muted overflow-hidden">

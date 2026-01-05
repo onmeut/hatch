@@ -24,17 +24,17 @@ type Event = Tables<"events">;
 type Profile = Tables<"profiles">;
 
 interface EventPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 export default async function EventPage({ params }: EventPageProps) {
-  const { id } = await params;
+  const { slug } = await params;
   const supabase = await createClient();
 
   const { data: eventData } = await supabase
     .from("events")
     .select("*")
-    .eq("id", id)
+    .eq("slug", slug)
     .single();
 
   if (!eventData) {
@@ -60,7 +60,7 @@ export default async function EventPage({ params }: EventPageProps) {
   const { count: registrationCount } = await supabase
     .from("registrations")
     .select("*", { count: "exact", head: true })
-    .eq("event_id", id);
+    .eq("event_id", event.id);
 
   // Check if current user is registered
   let isRegistered = false;
@@ -73,7 +73,7 @@ export default async function EventPage({ params }: EventPageProps) {
     const { data: registration } = await supabase
       .from("registrations")
       .select("id, ticket_id, status")
-      .eq("event_id", id)
+      .eq("event_id", event.id)
       .eq("user_id", user.id)
       .single();
     isRegistered = !!registration;
@@ -321,7 +321,7 @@ export default async function EventPage({ params }: EventPageProps) {
 
           {isCreator && (
             <div className="pt-4">
-              <EventActions eventId={event.id} />
+              <EventActions eventSlug={event.slug} />
             </div>
           )}
         </div>
@@ -388,7 +388,7 @@ export default async function EventPage({ params }: EventPageProps) {
 
             {isCreator && (
               <div className="pt-4">
-                <EventActions eventId={event.id} />
+                <EventActions eventSlug={event.slug} />
               </div>
             )}
           </div>

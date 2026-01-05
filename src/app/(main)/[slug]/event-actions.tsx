@@ -24,10 +24,10 @@ import { toast } from "sonner";
 import { Icons } from "@/components/icons";
 
 interface EventActionsProps {
-  eventId: string;
+  eventSlug: string;
 }
 
-export function EventActions({ eventId }: EventActionsProps) {
+export function EventActions({ eventSlug }: EventActionsProps) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
@@ -40,7 +40,7 @@ export function EventActions({ eventId }: EventActionsProps) {
       const { error } = await supabase
         .from("events")
         .delete()
-        .eq("id", eventId);
+        .eq("slug", eventSlug);
 
       if (error) {
         toast.error("یه مشکلی پیش اومد");
@@ -61,7 +61,7 @@ export function EventActions({ eventId }: EventActionsProps) {
   return (
     <>
       <div className="flex gap-2">
-        <Link href={`/events/${eventId}/attendees`}>
+        <Link href={`/${eventSlug}/attendees`}>
           <Button variant="outline" size="sm">
             <Icons.Users className="h-4 w-4 ml-2" />
             شرکت‌کننده‌ها
@@ -75,12 +75,12 @@ export function EventActions({ eventId }: EventActionsProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => router.push(`/events/${eventId}/edit`)}>
+            <DropdownMenuItem onClick={() => router.push(`/${eventSlug}/edit`)}>
               <Icons.Edit className="h-4 w-4 ml-2" />
               ویرایش رویداد
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href={`/events/${eventId}/attendees`}>
+              <Link href={`/${eventSlug}/attendees`}>
                 <Icons.Users className="h-4 w-4 ml-2" />
                 لیست شرکت‌کننده‌ها
               </Link>

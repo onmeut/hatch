@@ -73,7 +73,7 @@ export default async function DashboardPage() {
 
   const EventCard = ({ event, showTicketButton = false }: { event: Event; showTicketButton?: boolean }) => (
     <Card className="h-full hover:shadow-lg transition-all hover:border-primary/50 overflow-hidden">
-      <Link href={`/events/${event.id}`}>
+      <Link href={`/${event.slug}`}>
         {event.cover_image && (
           <div className="aspect-video bg-muted overflow-hidden">
             <img
@@ -125,7 +125,7 @@ export default async function DashboardPage() {
       </Link>
       {showTicketButton && (
         <CardContent className="pt-0">
-          <Link href={`/events/${event.id}/ticket`}>
+          <Link href={`/${event.slug}/ticket`}>
             <Button variant="outline" size="sm" className="w-full">
               <Icons.Ticket className="h-4 w-4 ml-2" />
               مشاهده بلیط
