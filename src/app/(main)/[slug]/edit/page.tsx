@@ -103,7 +103,7 @@ export default function EditEventPage({ params }: EditEventPageProps) {
       }
 
       toast.success("رویداد بروز شد! ✨");
-      router.push(`/${updatedEvent.slug}`);
+      router.push(`/${(updatedEvent as { slug: string }).slug}`);
     } catch (error) {
       console.error("Update error:", error);
       toast.error("یه مشکلی پیش اومد", {

@@ -138,6 +138,7 @@ export type Database = {
           city: CityType | null;
           category: CategoryType;
           tickets: TicketType[];
+          slug: string;
           created_at: string;
           updated_at: string;
         };
@@ -156,6 +157,7 @@ export type Database = {
           city?: CityType | null;
           category?: CategoryType;
           tickets?: TicketType[];
+          slug?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -174,6 +176,7 @@ export type Database = {
           city?: CityType | null;
           category?: CategoryType;
           tickets?: TicketType[];
+          slug?: string;
           created_at?: string;
           updated_at?: string;
         };

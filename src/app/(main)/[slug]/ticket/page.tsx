@@ -54,7 +54,7 @@ export default async function TicketPage({ params }: TicketPageProps) {
   const { data: registrationData } = await supabase
     .from("registrations")
     .select("*")
-    .eq("event_id", id)
+    .eq("event_id", event.id)
     .eq("user_id", user.id)
     .single();
 
