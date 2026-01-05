@@ -21,8 +21,8 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { TicketType, CityType, CategoryType, CITIES, CATEGORIES, CATEGORY_ICONS } from "@/types/database";
-import { Icons } from "./icons";
+import { TicketType, CityType, CategoryType, CITIES, CATEGORIES } from "@/types/database";
+import { Icons, CategoryIcon } from "./icons";
 
 export type EventFormValues = {
   title: string;
@@ -171,7 +171,10 @@ export function EventForm({ initial, submitLabel, onSubmit }: EventFormProps) {
                 <SelectContent>
                   {Object.entries(CATEGORIES).map(([key, label]) => (
                     <SelectItem key={key} value={key}>
-                      {CATEGORY_ICONS[key as CategoryType]} {label}
+                      <div className="flex items-center gap-2">
+                        <CategoryIcon category={key as CategoryType} className="h-4 w-4" />
+                        {label}
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>

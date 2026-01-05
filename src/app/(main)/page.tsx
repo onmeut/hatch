@@ -17,7 +17,7 @@ import {
   CityType,
   CategoryType,
 } from "@/types/database";
-import { Icons } from "@/components/icons";
+import { Icons, CategoryIcon } from "@/components/icons";
 
 type Event = Tables<"events">;
 
@@ -79,9 +79,10 @@ export default async function HomePage() {
               <Link key={key} href={`/events?category=${key}`}>
                 <Badge
                   variant="outline"
-                  className="text-base py-2 px-4 cursor-pointer hover:bg-secondary transition-colors"
+                  className="text-base py-2 px-4 cursor-pointer hover:bg-secondary transition-colors flex items-center gap-2"
                 >
-                  {CATEGORY_ICONS[key as CategoryType]} {label}
+                  <CategoryIcon category={key as CategoryType} className="h-4 w-4" />
+                  {label}
                 </Badge>
               </Link>
             ))}
@@ -151,8 +152,8 @@ export default async function HomePage() {
                             {CITIES[event.city as CityType]}
                           </Badge>
                         )}
-                        <Badge variant="outline" className="text-xs">
-                          {CATEGORY_ICONS[event.category as CategoryType]}{" "}
+                        <Badge variant="outline" className="text-xs flex items-center gap-1">
+                          <CategoryIcon category={event.category as CategoryType} className="h-3 w-3" />
                           {CATEGORIES[event.category as CategoryType]}
                         </Badge>
                       </div>

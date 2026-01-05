@@ -19,7 +19,7 @@ import {
   CityType,
   CategoryType,
 } from "@/types/database";
-import { Icons } from "@/components/icons";
+import { Icons, CategoryIcon } from "@/components/icons";
 
 type Event = Tables<"events">;
 
@@ -90,8 +90,8 @@ export default async function DashboardPage() {
                 {CITIES[event.city as CityType]}
               </Badge>
             )}
-            <Badge variant="outline" className="text-xs">
-              {CATEGORY_ICONS[event.category as CategoryType]}{" "}
+            <Badge variant="outline" className="text-xs flex items-center gap-1">
+              <CategoryIcon category={event.category as CategoryType} className="h-3 w-3" />
               {CATEGORIES[event.category as CategoryType]}
             </Badge>
           </div>

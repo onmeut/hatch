@@ -17,7 +17,7 @@ import {
   CityType,
   CategoryType,
 } from "@/types/database";
-import { Icons } from "@/components/icons";
+import { Icons, CategoryIcon, CityIcon } from "@/components/icons";
 
 type Event = Tables<"events">;
 
@@ -29,7 +29,10 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
   const params = await searchParams;
   const supabase = await createClient();
 
-  let query = supabase.from("events").select("*").order("date", { ascending: true });
+  let query = supabase
+    .from("events")
+    .select("*")
+    .order("date", { ascending: true });
 
   if (params.category) {
     query = query.eq("category", params.category);
@@ -42,6 +45,29 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
   const { data: eventsData } = await query;
   const events = (eventsData || []) as Event[];
 
+  // Get event counts for each category
+  const categoryCounts: Record<CategoryType, number> = {} as Record<
+    CategoryType,
+    number
+  >;
+  for (const category of Object.keys(CATEGORIES) as CategoryType[]) {
+    const { count } = await supabase
+      .from("events")
+      .select("*", { count: "exact", head: true })
+      .eq("category", category);
+    categoryCounts[category] = count || 0;
+  }
+
+  // Get event counts for each city
+  const cityCounts: Record<CityType, number> = {} as Record<CityType, number>;
+  for (const city of Object.keys(CITIES) as CityType[]) {
+    const { count } = await supabase
+      .from("events")
+      .select("*", { count: "exact", head: true })
+      .eq("city", city);
+    cityCounts[city] = count || 0;
+  }
+
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
     return new Intl.DateTimeFormat("fa-IR", {
@@ -50,81 +76,69 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
     }).format(date);
   };
 
+  const formatCount = (count: number) => {
+    if (count >= 1000) {
+      return `${(count / 1000).toFixed(1)}K`;
+    }
+    return count.toString();
+  };
+
   const activeCategory = params.category as CategoryType | undefined;
   const activeCity = params.city as CityType | undefined;
 
   return (
     <div className="container py-8">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold mb-2">رویدادها</h1>
-          <p className="text-muted-foreground">
-            رویدادها رو ببین و تو اونایی که دوست داری ثبت‌نام کن
+          <h1 className="text-3xl font-bold mb-2">کشف رویدادها</h1>
+          <p className="text-muted-foreground text-base">
+            رویدادهای محبوب نزدیک خودت رو ببین، بر اساس دسته‌بندی جستجو کن یا
+            تقویم‌های عالی جامعه رو بررسی کن
           </p>
         </div>
-        <Link href="/events/new">
-          <Button>ساخت رویداد</Button>
-        </Link>
       </div>
 
-      {/* Filters */}
-      <div className="space-y-4 mb-8">
-        {/* Categories */}
-        <div>
-          <h3 className="text-sm font-medium text-muted-foreground mb-3">
-            موضوعات
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            <Link href="/events">
-              <Badge
-                variant={!activeCategory ? "default" : "outline"}
-                className="cursor-pointer hover:bg-primary/80"
-              >
-                همه
-              </Badge>
-            </Link>
-            {Object.entries(CATEGORIES).map(([key, label]) => (
-              <Link key={key} href={`/events?category=${key}${activeCity ? `&city=${activeCity}` : ""}`}>
-                <Badge
-                  variant={activeCategory === key ? "default" : "outline"}
-                  className="cursor-pointer hover:bg-primary/80"
-                >
-                  {CATEGORY_ICONS[key as CategoryType]} {label}
-                </Badge>
-              </Link>
-            ))}
-          </div>
-        </div>
+      {/* Browse by Category Section */}
+      <div className="mb-12">
+        <h2 className="text-2xl font-bold mb-6">جستجو بر اساس دسته‌بندی</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Object.entries(CATEGORIES).map(([key, label]) => {
+            const category = key as CategoryType;
+            const count = categoryCounts[category];
+            const isActive = activeCategory === category;
 
-        {/* Cities */}
-        <div>
-          <h3 className="text-sm font-medium text-muted-foreground mb-3">
-            شهرها
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            <Link href={activeCategory ? `/events?category=${activeCategory}` : "/events"}>
-              <Badge
-                variant={!activeCity ? "secondary" : "outline"}
-                className="cursor-pointer"
-              >
-                همه شهرها
-              </Badge>
-            </Link>
-            {Object.entries(CITIES).map(([key, label]) => (
+            return (
               <Link
                 key={key}
-                href={`/events?city=${key}${activeCategory ? `&category=${activeCategory}` : ""}`}
+                href={`/events?category=${key}${
+                  activeCity ? `&city=${activeCity}` : ""
+                }`}
               >
-                <Badge
-                  variant={activeCity === key ? "secondary" : "outline"}
-                  className="cursor-pointer"
+                <Card
+                  className={`h-fit py-0 hover:shadow-lg transition-all cursor-pointer ${
+                    isActive
+                      ? "border-primary bg-primary/5"
+                      : "hover:border-primary/50"
+                  }`}
                 >
-                  {label}
-                </Badge>
+                  <CardContent className="p-0">
+                    <div className="flex items-center gap-4 p-[5px]">
+                      <div className="p-3 rounded-lg bg-secondary/50">
+                        <CategoryIcon category={category} className="h-8 w-8" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-bold text-lg mb-0.5">{label}</h3>
+                        <p className="text-sm text-muted-foreground">
+                          {formatCount(count)} رویداد
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </Link>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </div>
 
@@ -133,12 +147,16 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
         <div className="flex items-center gap-2 mb-6">
           <span className="text-sm text-muted-foreground">فیلترها:</span>
           {activeCategory && (
-            <Badge variant="secondary">
-              {CATEGORY_ICONS[activeCategory]} {CATEGORIES[activeCategory]}
+            <Badge variant="secondary" className="flex items-center gap-1">
+              <CategoryIcon category={activeCategory} className="h-3 w-3" />
+              {CATEGORIES[activeCategory]}
             </Badge>
           )}
           {activeCity && (
-            <Badge variant="secondary">🏙️ {CITIES[activeCity]}</Badge>
+            <Badge variant="secondary" className="flex items-center gap-1">
+              <CityIcon city={activeCity} className="!p-1.5" />
+              {CITIES[activeCity]}
+            </Badge>
           )}
           <Link href="/events">
             <Button variant="ghost" size="sm" className="text-destructive">
@@ -153,7 +171,7 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {events.map((event) => (
             <Link href={`/${event.slug}`} key={event.id}>
-              <Card className="h-full hover:shadow-lg transition-all hover:border-primary/50 cursor-pointer overflow-hidden">
+              <Card className="h-full hover:shadow-lg transition-all hover:border-primary/50 cursor-pointer overflow-hidden gap-0 py-0">
                 {event.cover_image && (
                   <div className="aspect-video bg-muted overflow-hidden">
                     <img
@@ -163,47 +181,46 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
                     />
                   </div>
                 )}
-                <CardHeader className="pb-2">
-                  <div className="flex items-center gap-2 mb-2">
+                <CardHeader className="pt-5 pb-5">
+                  <div className="flex items-center gap-2">
                     {event.city && (
                       <Badge variant="secondary" className="text-xs">
                         {CITIES[event.city as CityType]}
                       </Badge>
                     )}
-                    <Badge variant="outline" className="text-xs">
-                      {CATEGORY_ICONS[event.category as CategoryType]}{" "}
+                    <Badge
+                      variant="outline"
+                      className="text-xs flex items-center gap-1"
+                    >
+                      <CategoryIcon
+                        category={event.category as CategoryType}
+                        className="h-3 w-3"
+                      />
                       {CATEGORIES[event.category as CategoryType]}
                     </Badge>
                   </div>
                   <CardTitle className="line-clamp-2 text-lg">
                     {event.title}
                   </CardTitle>
-                      <CardDescription className="flex items-center gap-2">
-                        <Icons.CalendarDays className="h-4 w-4" />
-                        <span>{formatDate(event.date)}</span>
-                        <span>•</span>
-                        <span className="flex items-center gap-1">
-                          {event.location_type === "online" ? (
-                            <>
-                              <Icons.Globe className="h-4 w-4" />
-                              آنلاین
-                            </>
-                          ) : (
-                            <>
-                              <Icons.MapPin className="h-4 w-4" />
-                              حضوری
-                            </>
-                          )}
-                        </span>
-                      </CardDescription>
+                  <CardDescription className="flex items-center gap-2">
+                    <Icons.CalendarDays className="h-4 w-4" />
+                    <span>{formatDate(event.date)}</span>
+                    <span>•</span>
+                    <span className="flex items-center gap-1">
+                      {event.location_type === "online" ? (
+                        <>
+                          <Icons.Globe className="h-4 w-4" />
+                          آنلاین
+                        </>
+                      ) : (
+                        <>
+                          <Icons.MapPin className="h-4 w-4" />
+                          حضوری
+                        </>
+                      )}
+                    </span>
+                  </CardDescription>
                 </CardHeader>
-                {event.description && (
-                  <CardContent className="pt-0">
-                    <p className="text-sm text-muted-foreground line-clamp-2">
-                      {event.description}
-                    </p>
-                  </CardContent>
-                )}
               </Card>
             </Link>
           ))}
@@ -233,6 +250,45 @@ export default async function EventsPage({ searchParams }: EventsPageProps) {
           </div>
         </div>
       )}
+
+      {/* Cities Section */}
+      <div className="mb-12 mt-12">
+        <h2 className="text-2xl font-bold mb-6">شهرها</h2>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {Object.entries(CITIES).map(([key, label]) => {
+            const city = key as CityType;
+            const count = cityCounts[city];
+            const isActive = activeCity === city;
+
+            return (
+              <Link
+                key={key}
+                href={`/events?city=${key}${
+                  activeCategory ? `&category=${activeCategory}` : ""
+                }`}
+              >
+                <Card
+                  className={`h-fit py-0 border-0 hover:shadow-lg transition-all cursor-pointer text-right ${
+                    isActive
+                      ? "border-primary bg-primary/5"
+                      : "hover:border-primary/50"
+                  }`}
+                >
+                  <CardContent className="p-0 flex flex-row items-center gap-3 text-right">
+                    <CityIcon city={city} />
+                    <div className="text-right">
+                      <h3 className="font-bold text-lg mb-1">{label}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        {formatCount(count)} رویداد
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

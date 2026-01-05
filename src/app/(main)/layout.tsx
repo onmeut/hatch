@@ -15,9 +15,6 @@ export default async function MainLayout({
     <div className="min-h-screen flex flex-col">
       <Header user={user} />
       <main className="flex-1">{children}</main>
-      <footer className="border-t py-6 text-center text-sm text-muted-foreground">
-        <p>🐣 هاچ - پلتفرم رویدادها</p>
-      </footer>
     </div>
   );
 }

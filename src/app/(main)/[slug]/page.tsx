@@ -18,7 +18,7 @@ import {
   TicketType,
   RegistrationStatus,
 } from "@/types/database";
-import { Icons } from "@/components/icons";
+import { Icons, CategoryIcon } from "@/components/icons";
 
 type Event = Tables<"events">;
 type Profile = Tables<"profiles">;
@@ -285,8 +285,8 @@ export default async function EventPage({ params }: EventPageProps) {
           {/* Category & Stats */}
           <div className="flex items-center gap-4 text-sm">
             <Link href={`/events?category=${event.category}`}>
-              <Badge variant="outline">
-                {CATEGORY_ICONS[event.category as CategoryType]}{" "}
+              <Badge variant="outline" className="flex items-center gap-1">
+                <CategoryIcon category={event.category as CategoryType} className="h-3 w-3" />
                 {CATEGORIES[event.category as CategoryType]}
               </Badge>
             </Link>
