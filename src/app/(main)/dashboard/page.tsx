@@ -137,20 +137,23 @@ export default async function DashboardPage() {
   );
 
   return (
-    <div className="container py-8">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-bold mb-2">داشبورد 📊</h1>
+    <div className="space-y-8">
+      <div className="flex items-center justify-between">
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold">داشبورد 📊</h1>
           <p className="text-muted-foreground">
             رویدادهایی که ساختی یا توشون ثبت‌نام کردی
           </p>
         </div>
         <Link href="/events/new">
-          <Button>ساخت رویداد جدید</Button>
+          <Button>
+            <Icons.PlusCircle className="ml-2 h-4 w-4" />
+            ساخت رویداد جدید
+          </Button>
         </Link>
       </div>
 
-      <Tabs defaultValue="my-events" className="space-y-6">
+      <Tabs defaultValue="my-events" className="space-y-6 w-full" dir="rtl">
         <TabsList>
           <TabsTrigger value="my-events">
             رویدادهای من ({myEvents.length})

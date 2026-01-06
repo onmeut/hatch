@@ -232,7 +232,12 @@ export function RegistrationDialog({
 
       if (error) {
         if (error.code === "23505") {
-          toast.error("قبلاً ثبت‌نام کردی!");
+          // User is already registered - just log them in and redirect to ticket
+          toast.success("وارد شدی! 🎉", {
+            description: "قبلاً ثبت‌نام کرده بودی",
+          });
+          onSuccess();
+          router.push(`/${event.slug}/ticket`);
         } else {
           toast.error("یه مشکلی پیش اومد", {
             description: error.message,

@@ -53,7 +53,13 @@ export default function NewEventPage() {
   };
 
   return (
-    <div className="container py-8">
+    <div className="space-y-8 max-w-3xl">
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold">ساخت رویداد جدید</h1>
+        <p className="text-muted-foreground">
+          اطلاعات رویدادت رو وارد کن و با دوستات به اشتراک بذار
+        </p>
+      </div>
       <EventForm onSubmit={handleCreate} submitLabel="ساخت رویداد" />
     </div>
   );

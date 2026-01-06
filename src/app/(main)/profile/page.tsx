@@ -112,7 +112,7 @@ export default function ProfilePage() {
 
   if (isFetching) {
     return (
-      <div className="container py-8">
+      <div className="space-y-8">
         <Card>
           <CardContent className="py-20 text-center text-muted-foreground">
             در حال بارگذاری...
@@ -123,7 +123,11 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="container py-8">
+    <div className="space-y-8 max-w-2xl">
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold">پروفایل</h1>
+        <p className="text-muted-foreground">اطلاعات حسابت رو ویرایش کن</p>
+      </div>
       <Card>
         <CardHeader className="text-center">
           <div className="flex justify-center mb-4">
@@ -133,8 +137,8 @@ export default function ProfilePage() {
               </AvatarFallback>
             </Avatar>
           </div>
-          <CardTitle className="text-2xl">پروفایل</CardTitle>
-          <CardDescription>اطلاعات حسابت رو ویرایش کن</CardDescription>
+          <CardTitle className="text-xl">مشخصات شما</CardTitle>
+          <CardDescription>اطلاعات خود را ویرایش کنید</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
