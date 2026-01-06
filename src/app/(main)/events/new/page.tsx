@@ -53,11 +53,11 @@ export default function NewEventPage() {
   };
 
   return (
-    <div className="space-y-8 max-w-3xl">
+    <div className="mx-auto max-w-3xl w-full space-y-6">
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">ساخت رویداد جدید</h1>
         <p className="text-muted-foreground">
-          اطلاعات رویدادت رو وارد کن و با دوستات به اشتراک بذار
+          اطلاعات رویداد رو وارد کن تا لینک اختصاصی‌اش آماده بشه
         </p>
       </div>
       <EventForm onSubmit={handleCreate} submitLabel="ساخت رویداد" />

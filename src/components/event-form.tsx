@@ -15,9 +15,6 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -115,16 +112,7 @@ export function EventForm({ initial, submitLabel, onSubmit }: EventFormProps) {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="text-2xl flex items-center gap-2">
-          <Icons.Sparkles className="h-6 w-6 text-primary" />
-          {initial ? "ویرایش رویداد" : "ساخت رویداد جدید"}
-        </CardTitle>
-        <CardDescription>
-          اطلاعات رویداد رو وارد کن تا لینک اختصاصی‌اش آماده بشه
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="pt-6">
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="space-y-4">
             <div className="space-y-2">

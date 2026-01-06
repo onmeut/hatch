@@ -114,10 +114,10 @@ export default function EditEventPage({ params }: EditEventPageProps) {
 
   if (isFetching || !initialValues) {
     return (
-      <div className="container py-8">
+      <div className="mx-auto max-w-3xl w-full">
         <Card>
           <CardContent className="py-20 text-center text-muted-foreground">
-            <Icons.Sparkles className="mx-auto mb-4 h-8 w-8 text-primary" />
+            <Icons.Sparkles className="mx-auto mb-4 h-8 w-8 text-primary animate-pulse" />
             <CardDescription>در حال بارگذاری...</CardDescription>
           </CardContent>
         </Card>
@@ -126,7 +126,13 @@ export default function EditEventPage({ params }: EditEventPageProps) {
   }
 
   return (
-    <div className="container py-8">
+    <div className="mx-auto max-w-3xl w-full space-y-6">
+      <div className="space-y-2">
+        <h1 className="text-3xl font-bold">ویرایش رویداد</h1>
+        <p className="text-muted-foreground">
+          اطلاعات رویداد رو ویرایش کن و تغییرات رو ذخیره کن
+        </p>
+      </div>
       <EventForm
         initial={{ ...initialValues }}
         submitLabel="ذخیره تغییرات"
